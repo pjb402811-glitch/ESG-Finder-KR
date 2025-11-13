@@ -1,4 +1,5 @@
 // Fix: Replaced placeholder content with a full implementation of the Gemini API service.
+// Fix: Removed deprecated GoogleGenAIError from import.
 import { GoogleGenAI, Type } from "@google/genai";
 import { DiagnosisResult, ESGTopic, Indicator, ReportSuggestions } from "../types";
 import { INDICATORS } from "../constants";
@@ -105,66 +106,87 @@ export const generateSuggestions = async (result: DiagnosisResult): Promise<Repo
 
         위 지침에 따라, 아래 JSON 스키마 형식에 맞춰 응답을 생성해주세요. 모든 텍스트는 한국어로 작성되어야 합니다.
     `;
-    
-    try {
-        // getAiClient는 이제 Promise를 반환하므로 await를 사용합니다.
-        const client = await getAiClient();
-        
-        const response = await client.models.generateContent({
-            model: "gemini-2.5-flash",
-            contents: prompt,
-            config: {
-                responseMimeType: "application/json",
-                responseSchema: {
-                    type: Type.OBJECT,
-                    properties: {
-                        overallSummary: { type: Type.STRING, description: "진단 결과에 대한 종합적인 전략 제언 및 총평." },
-                        strengths: { type: Type.ARRAY, description: "기업의 주요 ESG 강점 2~3가지.", items: { type: Type.STRING } },
-                        weaknesses: { type: Type.ARRAY, description: "개선이 시급한 주요 ESG 취약점 2~3가지.", items: { type: Type.STRING } },
-                        detailedAnalysis: {
-                            type: Type.OBJECT,
-                            properties: {
-                                E: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        currentStatus: { type: Type.STRING, description: "환경(E) 분야 현황에 대한 상세 분석." },
-                                        recommendations: { type: Type.ARRAY, description: "환경(E) 분야에 대한 구체적인 개선 제언 2~3가지.", items: { type: Type.STRING } }
-                                    },
-                                    required: ["currentStatus", "recommendations"]
-                                },
-                                S: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        currentStatus: { type: Type.STRING, description: "사회(S) 분야 현황에 대한 상세 분석." },
-                                        recommendations: { type: Type.ARRAY, description: "사회(S) 분야에 대한 구체적인 개선 제언 2~3가지.", items: { type: Type.STRING } }
-                                    },
-                                     required: ["currentStatus", "recommendations"]
-                                },
-                                G: {
-                                    type: Type.OBJECT,
-                                    properties: {
-                                        currentStatus: { type: Type.STRING, description: "지배구조(G) 분야 현황에 대한 상세 분석." },
-                                        recommendations: { type: Type.ARRAY, description: "지배구조(G) 분야에 대한 구체적인 개선 제언 2~3가지.", items: { type: Type.STRING } }
-                                    },
-                                     required: ["currentStatus", "recommendations"]
-                                }
-                            },
-                            required: ["E", "S", "G"]
-                        }
-                    },
-                    required: ["overallSummary", "strengths", "weaknesses", "detailedAnalysis"]
-                },
-            },
-        });
-        
-        const jsonText = response.text.trim();
-        const suggestions = JSON.parse(jsonText);
-        return suggestions;
 
-    } catch (error) {
-        console.error("Gemini API 제안 생성 중 오류 발생:", error);
-        // 오류가 발생하면 원본 에러를 다시 던져서 ReportPage에서 처리할 수 있도록 합니다.
-        // 이렇게 하면 사용자에게 좀 더 명확한 에러 메시지를 보여줄 수 있습니다.
-        throw error;
+    const maxRetries = 2;
+    let attempt = 0;
+
+    while (attempt <= maxRetries) {
+        try {
+            const client = await getAiClient();
+            
+            const response = await client.models.generateContent({
+                model: "gemini-2.5-flash",
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: Type.OBJECT,
+                        properties: {
+                            overallSummary: { type: Type.STRING, description: "진단 결과에 대한 종합적인 전략 제언 및 총평." },
+                            strengths: { type: Type.ARRAY, description: "기업의 주요 ESG 강점 2~3가지.", items: { type: Type.STRING } },
+                            weaknesses: { type: Type.ARRAY, description: "개선이 시급한 주요 ESG 취약점 2~3가지.", items: { type: Type.STRING } },
+                            detailedAnalysis: {
+                                type: Type.OBJECT,
+                                properties: {
+                                    E: {
+                                        type: Type.OBJECT,
+                                        properties: {
+                                            currentStatus: { type: Type.STRING, description: "환경(E) 분야 현황에 대한 상세 분석." },
+                                            recommendations: { type: Type.ARRAY, description: "환경(E) 분야에 대한 구체적인 개선 제언 2~3가지.", items: { type: Type.STRING } }
+                                        },
+                                        required: ["currentStatus", "recommendations"]
+                                    },
+                                    S: {
+                                        type: Type.OBJECT,
+                                        properties: {
+                                            currentStatus: { type: Type.STRING, description: "사회(S) 분야 현황에 대한 상세 분석." },
+                                            recommendations: { type: Type.ARRAY, description: "사회(S) 분야에 대한 구체적인 개선 제언 2~3가지.", items: { type: Type.STRING } }
+                                        },
+                                         required: ["currentStatus", "recommendations"]
+                                    },
+                                    G: {
+                                        type: Type.OBJECT,
+                                        properties: {
+                                            currentStatus: { type: Type.STRING, description: "지배구조(G) 분야 현황에 대한 상세 분석." },
+                                            recommendations: { type: Type.ARRAY, description: "지배구조(G) 분야에 대한 구체적인 개선 제언 2~3가지.", items: { type: Type.STRING } }
+                                        },
+                                         required: ["currentStatus", "recommendations"]
+                                    }
+                                },
+                                required: ["E", "S", "G"]
+                            }
+                        },
+                        required: ["overallSummary", "strengths", "weaknesses", "detailedAnalysis"]
+                    },
+                },
+            });
+            
+            const jsonText = response.text.trim();
+            const suggestions = JSON.parse(jsonText);
+            return suggestions;
+
+        } catch (error) {
+            console.error(`Gemini API 호출 시도 ${attempt + 1} 실패:`, error);
+            
+            // 503 오류 또는 네트워크 오류인 경우 재시도
+            // Fix: GoogleGenAIError is deprecated and no longer exported.
+            // The official SDK errors are generic, so we retry on any 'Error' instance,
+            // as most API errors are potentially transient.
+            if (error instanceof Error) {
+                if (attempt < maxRetries) {
+                    console.log(`${attempt + 1}차 재시도 대기...`);
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기
+                    attempt++;
+                } else {
+                    console.error("최대 재시도 횟수 초과. 최종 실패.");
+                    throw error; // 재시도 모두 실패 시 오류를 던짐
+                }
+            } else {
+                 // 재시도할 수 없는 다른 유형의 오류
+                throw error;
+            }
+        }
     }
+    // 루프가 어떤 이유로든 끝나면, 기본 오류를 던짐
+    throw new Error("AI 제안 생성에 실패했습니다. 알 수 없는 오류입니다.");
 };

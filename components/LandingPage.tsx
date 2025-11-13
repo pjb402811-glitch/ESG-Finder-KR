@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRightIcon } from './Icons';
+import { ChevronRightIcon, EyeIcon } from './Icons';
 import { getUsageCount, isLimitReached, incrementUsageCount, DAILY_LIMIT } from '../services/storageService';
+import SampleReportModal from './SampleReportModal';
 
 // A new SVG logo component inspired by the user-provided image.
 // This is defined here to avoid creating new files.
@@ -90,6 +91,7 @@ interface LandingPageProps {
 
 const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
   const [usageCount, setUsageCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setUsageCount(getUsageCount());
@@ -119,17 +121,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           ( 귀사의 ESG경영 활동에 도움을 받아보세요)
         </p>
         
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full sm:w-auto flex items-center justify-center gap-3 bg-slate-700 text-slate-300 font-bold py-4 px-8 text-xl rounded-full hover:bg-slate-600 transition-transform transform hover:scale-105 border border-slate-600"
+          >
+            <EyeIcon className="w-6 h-6" />
+            보고서 샘플 보기
+          </button>
           <button
             onClick={handleStartClick}
-            className="w-full sm:w-auto flex items-center justify-center gap-4 bg-green-500 text-white font-bold py-8 px-16 text-3xl rounded-full hover:bg-green-600 transition-transform transform hover:scale-105 shadow-lg shadow-green-500/20"
+            className="w-full sm:w-auto flex items-center justify-center gap-3 bg-green-500 text-white font-bold py-4 px-8 text-xl rounded-full hover:bg-green-600 transition-transform transform hover:scale-105 shadow-lg shadow-green-500/20"
           >
             ESG 자가진단 시작하기
-            <ChevronRightIcon className="w-8 h-8" />
+            <ChevronRightIcon className="w-6 h-6" />
           </button>
-          <div className="mt-4 text-slate-400 text-lg">
-            금일 사용횟수: {usageCount} / {DAILY_LIMIT}
-          </div>
+        </div>
+        <div className="mt-4 text-slate-400 text-lg">
+          금일 사용횟수: {usageCount} / {DAILY_LIMIT}
         </div>
 
         <div className="mt-16 sm:mt-24 text-center">
@@ -137,6 +146,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             <p className="mt-2 text-lg text-slate-500">(문의 : 경영성과처 ESG 담당자 : 042-607-3160)</p>
         </div>
       </div>
+      <SampleReportModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 };

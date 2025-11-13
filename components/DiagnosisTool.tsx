@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DiagnosisResult, QuantitativeData, AnySubQuestion, Indicator, PerformanceData, ESGTopic } from '../types';
-import { INDICATORS, TOPIC_DETAILS, DUMMY_ANSWERS, DUMMY_QUANTITATIVE_DATA, DUMMY_PERFORMANCE_DATA } from '../constants';
+import { INDICATORS, TOPIC_DETAILS } from '../constants';
 import PerformanceManagementPage from './PerformanceManagementPage';
 
 interface DiagnosisToolProps {
@@ -110,13 +110,6 @@ const DiagnosisTool: React.FC<DiagnosisToolProps> = ({ onComplete }) => {
       });
   };
   
-  const handleFillTestData = () => {
-    setAnswers(DUMMY_ANSWERS);
-    setQuantitativeAnswers(DUMMY_QUANTITATIVE_DATA);
-    setPerformanceData(DUMMY_PERFORMANCE_DATA);
-    alert('테스트용 데이터가 채워졌습니다. 각 탭을 확인하고 진단을 완료해주세요.');
-  };
-
   const calculateScores = (): { E: number; S: number; G: number; overall: number; } => {
     const topicScores: Record<ESGTopic, { totalPoints: number; maxPoints: number }> = {
       E: { totalPoints: 0, maxPoints: 0 },
@@ -301,12 +294,6 @@ const DiagnosisTool: React.FC<DiagnosisToolProps> = ({ onComplete }) => {
     <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-slate-100">ESG 자가진단</h1>
-             <button
-                onClick={handleFillTestData}
-                className="bg-indigo-500/10 text-indigo-400 font-semibold py-2 px-4 rounded-lg hover:bg-indigo-500/20 transition-colors"
-            >
-                테스트용 데이터 채우기
-            </button>
         </div>
       <div className="flex mb-4 bg-slate-800 rounded-lg overflow-hidden border border-slate-700">
         {TABS.map(tab => (

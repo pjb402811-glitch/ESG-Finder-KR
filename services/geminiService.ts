@@ -19,11 +19,11 @@ const getAiClient = (): GoogleGenAI => {
     }
     
     try {
-        // Fix: Per coding guidelines, API key MUST be read from process.env.API_KEY.
-        const apiKey = process.env.API_KEY;
+        // Fix: Per coding guidelines, API key MUST be read from process.env.VITE_API_KEY for client-side frameworks.
+        const apiKey = process.env.VITE_API_KEY;
         if (!apiKey) {
             // Fix: Updated error message to reflect the correct environment variable.
-            throw new Error("API_KEY environment variable is not set.");
+            throw new Error("VITE_API_KEY environment variable is not set.");
         }
         ai = new GoogleGenAI({ apiKey });
         return ai;
@@ -31,7 +31,7 @@ const getAiClient = (): GoogleGenAI => {
         console.error("Failed to initialize GoogleGenAI client.", e);
         // Re-throw to be caught by the caller in generateSuggestions
         // Fix: Updated error message to reflect the correct environment variable.
-        throw new Error("AI client could not be initialized. Check environment configuration and ensure API_KEY is set.");
+        throw new Error("AI client could not be initialized. Check environment configuration and ensure VITE_API_KEY is set.");
     }
 };
 

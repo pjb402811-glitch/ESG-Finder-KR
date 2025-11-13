@@ -93,13 +93,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
   useEffect(() => {
     setUsageCount(getUsageCount());
-
-    // VERCEL DEPLOYMENT DEBUG: Check if the API key is available on the client.
-    // This alert is for debugging purposes and can be removed after the issue is resolved.
-    if (!process.env.VITE_API_KEY) {
-      console.error("Vercel Environment Variable VITE_API_KEY is NOT set or not exposed to the client.");
-      alert("배포 환경 설정 오류: AI 기능을 위한 API 키가 설정되지 않았습니다. Vercel 대시보드에서 'VITE_API_KEY' 환경 변수를 확인하고 다시 배포해주세요.");
-    }
   }, []);
 
   const handleStartClick = () => {

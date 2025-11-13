@@ -109,7 +109,15 @@ const ReportPage: React.FC<ReportPageProps> = ({ result, onBack, onGoHome, onSug
           onSuggestionsGenerated(updatedResult); // <<-- Lift the final state up to the parent
         } catch (err) {
           console.error("Failed to generate suggestions:", err);
-          setError("AI 제언 생성에 실패했습니다. 잠시 후 다시 시도해주세요.");
+          let errorMessage = "AI 제언 생성에 실패했습니다. 잠시 후 다시 시도해주세요.";
+          if (err instanceof Error) {
+            if (err.message.includes("API key")) {
+              errorMessage = "AI 제언 생성 실패: API 키 설정에 문제가 있습니다. 관리자에게 문의하세요.";
+            } else if (err.message.includes("fetch")) {
+              errorMessage = "AI 제언 생성 실패: 서버와 통신할 수 없습니다. 네트워크 연결을 확인해주세요.";
+            }
+          }
+          setError(errorMessage);
         } finally {
           setIsLoading(false);
         }

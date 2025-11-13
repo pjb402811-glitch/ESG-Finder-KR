@@ -3,36 +3,47 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { DiagnosisResult, ESGTopic, Indicator, ReportSuggestions } from "../types";
 import { INDICATORS } from "../constants";
 
-// Lazy-initialized AI client to prevent app crash on load
-let ai: GoogleGenAI | null = null;
+// AI 클라이언트 인스턴스를 저장하기 위한 Promise
+// 한 번 초기화되면 계속 재사용하여 불필요한 API 호출을 방지합니다.
+let aiClientPromise: Promise<GoogleGenAI> | null = null;
 
 /**
- * Lazily initializes and returns the GoogleGenAI client.
- * This prevents the application from crashing at startup if the API key
- * is not configured correctly in the environment.
- * @returns An instance of the GoogleGenAI client.
- * @throws An error if the API key is not set or initialization fails.
+ * API 키를 서버리스 함수에서 가져와 GoogleGenAI 클라이언트를 비동기적으로 초기화합니다.
+ * Promise를 사용하여 클라이언트 초기화가 단 한 번만 실행되도록 보장합니다.
+ * @returns GoogleGenAI 클라이언트 인스턴스를 담은 Promise.
  */
-const getAiClient = (): GoogleGenAI => {
-    if (ai) {
-        return ai;
+const getAiClient = (): Promise<GoogleGenAI> => {
+    if (aiClientPromise) {
+        return aiClientPromise;
     }
-    
-    try {
-        // Fix: Per coding guidelines, API key MUST be read from process.env.VITE_API_KEY for client-side frameworks.
-        const apiKey = process.env.VITE_API_KEY;
-        if (!apiKey) {
-            // Fix: Updated error message to reflect the correct environment variable.
-            throw new Error("VITE_API_KEY environment variable is not set.");
+
+    // Promise를 생성하여 API 키를 가져오고 클라이언트를 초기화하는 비동기 작업을 캡슐화합니다.
+    aiClientPromise = new Promise(async (resolve, reject) => {
+        try {
+            // 새로 만든 Vercel 서버리스 함수 엔드포인트로 요청을 보냅니다.
+            const response = await fetch('/api/config');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(`API 설정 가져오기 실패: ${response.status} ${response.statusText} - ${errorData.error}`);
+            }
+            
+            const config = await response.json();
+            const apiKey = config.apiKey;
+
+            if (!apiKey) {
+                throw new Error("서버로부터 API 키를 받지 못했습니다.");
+            }
+
+            const ai = new GoogleGenAI({ apiKey });
+            resolve(ai);
+        } catch (error) {
+            console.error("GoogleGenAI 클라이언트 초기화 실패:", error);
+            // Promise를 reject하여 호출한 쪽에서 에러를 처리할 수 있도록 합니다.
+            reject(new Error("AI 클라이언트를 초기화할 수 없습니다. 네트워크 또는 서버 설정을 확인해주세요."));
         }
-        ai = new GoogleGenAI({ apiKey });
-        return ai;
-    } catch (e) {
-        console.error("Failed to initialize GoogleGenAI client.", e);
-        // Re-throw to be caught by the caller in generateSuggestions
-        // Fix: Updated error message to reflect the correct environment variable.
-        throw new Error("AI client could not be initialized. Check environment configuration and ensure VITE_API_KEY is set.");
-    }
+    });
+
+    return aiClientPromise;
 };
 
 
@@ -96,7 +107,8 @@ export const generateSuggestions = async (result: DiagnosisResult): Promise<Repo
     `;
     
     try {
-        const client = getAiClient();
+        // getAiClient는 이제 Promise를 반환하므로 await를 사용합니다.
+        const client = await getAiClient();
         
         const response = await client.models.generateContent({
             model: "gemini-2.5-flash",
@@ -150,37 +162,9 @@ export const generateSuggestions = async (result: DiagnosisResult): Promise<Repo
         return suggestions;
 
     } catch (error) {
-        console.error("Error generating suggestions from Gemini API:", error);
-        return {
-            overallSummary: "현재 ESG 경영의 기본 틀을 갖추기 시작하는 단계입니다. 법규 준수 등 기본적인 관리는 이루어지고 있으나, 장기적인 관점의 에너지 관리 및 공급망 리스크 대응 전략을 수립하여 ESG 경영을 내재화하는 것이 중요합니다.",
-            strengths: ["환경 법규를 잘 준수하고 있습니다.", "표준근로계약서 작성을 통해 안정적인 노사 관계의 기반을 다졌습니다."],
-            weaknesses: ["에너지 사용량 관리 및 절감 노력이 부족합니다.", "공급망에 대한 ESG 리스크 관리가 필요합니다."],
-            detailedAnalysis: {
-                E: {
-                    currentStatus: "전반적인 환경 관리 체계 구축이 초기 단계에 있습니다. 특히 에너지 및 폐기물 관리 측면에서 개선이 필요합니다.",
-                    recommendations: [
-                        "에너지 사용량 모니터링 시스템 도입: 월별 에너지 사용량을 측정하고, 주요 에너지 소비원을 파악하여 절감 목표를 설정하세요.",
-                        "폐기물 분리배출 교육 실시: 전 직원을 대상으로 올바른 분리배출 방법을 교육하고, 재활용 가능한 자원의 낭비를 줄이세요.",
-                        "친환경 사무용품 구매 가이드라인 수립: 재활용 용지, 친환경 인증 제품 등 사무용품 구매 시 환경을 고려하는 기준을 마련하세요."
-                    ]
-                },
-                S: {
-                    currentStatus: "근로기준법 등 기본적인 노동 인권은 준수하고 있으나, 임직원 역량 개발 및 다양성 관리 측면에서 아쉬움이 있습니다.",
-                    recommendations: [
-                        "직무 역량 강화 교육 프로그램 도입: 외부 전문 기관과 연계하여 직원들의 전문성을 높일 수 있는 온라인/오프라인 교육 기회를 제공하세요.",
-                        "고충처리 채널 활성화: 익명성이 보장되는 온라인 고충처리 채널을 개설하고, 접수된 내용에 대해 정기적으로 피드백을 제공하여 신뢰를 구축하세요.",
-                        "명확한 채용/승진 기준 수립 및 공표: 성별, 학력 등에 따른 차별이 발생하지 않도록 객관적인 평가 기준을 마련하고 전 직원에게 투명하게 공개하세요."
-                    ]
-                },
-                G: {
-                    currentStatus: "기업 운영의 기본적인 틀은 갖추고 있으나, ESG 경영을 위한 공식적인 정책 및 정보 공개가 부족한 상태입니다.",
-                    recommendations: [
-                        "윤리 강령 제정 및 문서화: 모든 임직원이 준수해야 할 기본적인 윤리 원칙을 담은 윤리 강령을 제정하고, 신입사원 교육에 포함시키세요.",
-                        "기업 홈페이지에 ESG 섹션 개설: 기업의 ESG 활동과 성과를 외부에 투명하게 공개하는 채널을 마련하여 이해관계자와의 소통을 강화하세요.",
-                        "이사회 내 ESG 안건 정기 보고: 연 1회 이상 ESG 관련 주요 현황과 계획을 이사회에 보고하고, 의사결정에 반영하는 공식적인 절차를 수립하세요."
-                    ]
-                }
-            }
-        };
+        console.error("Gemini API 제안 생성 중 오류 발생:", error);
+        // 오류가 발생하면 원본 에러를 다시 던져서 ReportPage에서 처리할 수 있도록 합니다.
+        // 이렇게 하면 사용자에게 좀 더 명확한 에러 메시지를 보여줄 수 있습니다.
+        throw error;
     }
 };

@@ -1,0 +1,29 @@
+{
+  "name": "ESG 자가진단 Tool-협력사",
+  "short_name": "ESG 자가진단",
+  "description": "An intuitive web application for Small and Medium-sized Enterprises (SMEs) to self-diagnose their ESG management level and receive a concise report with actionable suggestions for sustainable growth.",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a"
+}

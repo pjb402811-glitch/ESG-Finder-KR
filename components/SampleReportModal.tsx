@@ -43,7 +43,7 @@ const SampleReportContent = () => (
             </g>
             <g className="recharts-layer recharts-radar">
               <g className="recharts-layer recharts-radar-polygon">
-                <path name="MIX " stroke="#22c55e" fill="#22c55e" fillOpacity="0.6" className="recharts-polygon" d="M199.5,118.66666666666667L242.45486002770815,184.8L156.54513997229185,184.8L199.5,118.66666666666667Z"></path>
+                <path name="OOO " stroke="#22c55e" fill="#22c55e" fillOpacity="0.6" className="recharts-polygon" d="M199.5,118.66666666666667L242.45486002770815,184.8L156.54513997229185,184.8L199.5,118.66666666666667Z"></path>
               </g>
             </g>
             <g className="recharts-layer recharts-polar-radius-axis radiusAxis">
@@ -86,7 +86,7 @@ const SampleReportContent = () => (
           <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-amber-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75c0-.231-.035-.454-.1-.664M6.75 7.5h1.5v-1.5h-1.5v1.5zm0 3h1.5v-1.5h-1.5v1.5zm0 3h1.5v-1.5h-1.5v1.5z"></path><path strokeLinecap="round" strokeLinejoin="round" d="M6 21a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08H6.75A2.25 2.25 0 004.5 6.108v12.785c0 1.243 1.007 2.25 2.25 2.25z"></path></svg>
           <h3 className="text-2xl font-bold text-slate-100">종합 전략 제언</h3>
         </div>
-        <div className="p-6"><p className="text-slate-300 whitespace-pre-wrap leading-relaxed">MIX 기업은 현재 ESG 경영 도입의 초기 단계에 있으며, 전반적인 ESG 점수(1.9/5.0)는 개선이 시급함을 보여줍니다. 환경 법규 준수, 차별 없는 고용, 이사회 내 ESG 안건 보고 등 일부 긍정적인 기초를 마련하고 있으나, 온실가스 관리, 안전보건 관리체계 구축, 표준근로계약서 작성, 윤리 및 정보보안 정책 수립 등 핵심적인 ESG 경영 시스템과 데이터 기반의 관리가 전반적으로 부재합니다. 지속가능한 성장을 위해서는 단편적인 활동을 넘어, 각 분야별 체계적인 정책 수립과 목표 설정, 그리고 실행 가능한 개선 과제들을 수립하고 이행하여 ESG를 기업의 핵심 경영 전략으로 통합하는 것이 시급합니다. 이를 통해 잠재적 리스크를 관리하고 새로운 비즈니스 기회를 모색해야 합니다.</p></div>
+        <div className="p-6"><p className="text-slate-300 whitespace-pre-wrap leading-relaxed">OOO 기업은 현재 ESG 경영 도입의 초기 단계에 있으며, 전반적인 ESG 점수(1.9/5.0)는 개선이 시급함을 보여줍니다. 환경 법규 준수, 차별 없는 고용, 이사회 내 ESG 안건 보고 등 일부 긍정적인 기초를 마련하고 있으나, 온실가스 관리, 안전보건 관리체계 구축, 표준근로계약서 작성, 윤리 및 정보보안 정책 수립 등 핵심적인 ESG 경영 시스템과 데이터 기반의 관리가 전반적으로 부재합니다. 지속가능한 성장을 위해서는 단편적인 활동을 넘어, 각 분야별 체계적인 정책 수립과 목표 설정, 그리고 실행 가능한 개선 과제들을 수립하고 이행하여 ESG를 기업의 핵심 경영 전략으로 통합하는 것이 시급합니다. 이를 통해 잠재적 리스크를 관리하고 새로운 비즈니스 기회를 모색해야 합니다.</p></div>
       </div>
       <div className="grid md:grid-cols-2 gap-8">
         <div className="bg-slate-800 rounded-2xl shadow-lg border border-slate-700">
@@ -129,7 +129,7 @@ const SampleReportContent = () => (
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"></path></svg>
                 <p className="font-bold text-slate-200 text-md">현황 분석</p>
               </div>
-              <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">MIX 기업은 연간 에너지 사용량을 파악하고 있으며 최근 3년간 환경 관련 법규 위반 사실이 없다는 점은 긍정적입니다. 그러나 온실가스 배출 현황을 파악하고 있지 않으며, 연간 온실가스 감축 목표도 설정되어 있지 않습니다. 또한, 에너지 사용량 절감을 위한 고효율 장비 도입 등의 활동이 미흡하고, 폐기물 발생량 파악 및 재활용 노력이 부족하여 환경 경영 전반에 걸친 시스템적 접근이 미흡한 상태입니다. 기본적인 현황 파악은 이루어지고 있으나, 이를 바탕으로 한 구체적인 목표 설정과 실행 계획, 그리고 성과 관리가 부재합니다.</p>
+              <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">OOO 기업은 연간 에너지 사용량을 파악하고 있으며 최근 3년간 환경 관련 법규 위반 사실이 없다는 점은 긍정적입니다. 그러나 온실가스 배출 현황을 파악하고 있지 않으며, 연간 온실가스 감축 목표도 설정되어 있지 않습니다. 또한, 에너지 사용량 절감을 위한 고효율 장비 도입 등의 활동이 미흡하고, 폐기물 발생량 파악 및 재활용 노력이 부족하여 환경 경영 전반에 걸친 시스템적 접근이 미흡한 상태입니다. 기본적인 현황 파악은 이루어지고 있으나, 이를 바탕으로 한 구체적인 목표 설정과 실행 계획, 그리고 성과 관리가 부재합니다.</p>
             </div>
             <div>
               <div className="inline-flex items-center gap-2 bg-slate-700 border border-slate-600 rounded-full px-4 py-1.5 mb-2">
@@ -150,7 +150,7 @@ const SampleReportContent = () => (
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"></path></svg>
                 <p className="font-bold text-slate-200 text-md">현황 분석</p>
               </div>
-              <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">MIX 기업은 전 직원을 대상으로 정기적인 안전보건 교육을 실시하고 있으며, 채용 및 승진 과정에서 차별이 없다는 점에서 긍정적입니다. 그러나 산업안전보건법에 따른 안전보건 관리체계가 아직 구축되지 않았고, 모든 직원과 표준근로계약서가 작성되지 않아 기본적인 근로 조건의 투명성과 안정성이 부족합니다. 또한, 주요 공급업체를 대상으로 ESG(환경, 인권 등) 관련 위험을 평가하지 않아 공급망 전반의 사회적 책임 관리 역량이 미흡한 상태입니다. 이는 잠재적인 법적, 평판 리스크로 작용할 수 있습니다.</p>
+              <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">OOO 기업은 전 직원을 대상으로 정기적인 안전보건 교육을 실시하고 있으며, 채용 및 승진 과정에서 차별이 없다는 점에서 긍정적입니다. 그러나 산업안전보건법에 따른 안전보건 관리체계가 아직 구축되지 않았고, 모든 직원과 표준근로계약서가 작성되지 않아 기본적인 근로 조건의 투명성과 안정성이 부족합니다. 또한, 주요 공급업체를 대상으로 ESG(환경, 인권 등) 관련 위험을 평가하지 않아 공급망 전반의 사회적 책임 관리 역량이 미흡한 상태입니다. 이는 잠재적인 법적, 평판 리스크로 작용할 수 있습니다.</p>
             </div>
             <div>
               <div className="inline-flex items-center gap-2 bg-slate-700 border border-slate-600 rounded-full px-4 py-1.5 mb-2">
@@ -171,7 +171,7 @@ const SampleReportContent = () => (
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"></path></svg>
                 <p className="font-bold text-slate-200 text-md">현황 분석</p>
               </div>
-              <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">MIX 기업은 임직원 대상 윤리 교육을 정기적으로 실시하고 ESG 관련 안건이 이사회에 보고되고 있다는 점에서 거버넌스 개선 의지를 보이고 있습니다. 그러나 임직원이 준수해야 할 윤리강령 또는 행동규범이 명확히 수립되어 있지 않으며, 기업의 정보자산을 보호하기 위한 정보보안 정책도 부재합니다. 또한, 기업 홈페이지 등을 통해 ESG 관련 활동이나 정보를 공개하고 있지 않아 이해관계자와의 투명한 소통이 부족한 상태입니다. 이는 기업의 신뢰도와 투명성에 부정적인 영향을 미칠 수 있습니다.</p>
+              <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">OOO 기업은 임직원 대상 윤리 교육을 정기적으로 실시하고 ESG 관련 안건이 이사회에 보고되고 있다는 점에서 거버넌스 개선 의지를 보이고 있습니다. 그러나 임직원이 준수해야 할 윤리강령 또는 행동규범이 명확히 수립되어 있지 않으며, 기업의 정보자산을 보호하기 위한 정보보안 정책도 부재합니다. 또한, 기업 홈페이지 등을 통해 ESG 관련 활동이나 정보를 공개하고 있지 않아 이해관계자와의 투명한 소통이 부족한 상태입니다. 이는 기업의 신뢰도와 투명성에 부정적인 영향을 미칠 수 있습니다.</p>
             </div>
             <div>
               <div className="inline-flex items-center gap-2 bg-slate-700 border border-slate-600 rounded-full px-4 py-1.5 mb-2">
@@ -181,7 +181,7 @@ const SampleReportContent = () => (
               <ul className="space-y-2 text-slate-300 list-disc list-inside pl-2">
                 <li className="leading-relaxed">기업 윤리강령 및 행동규범 수립 및 내재화: 임직원 모두가 준수해야 할 명확한 기업 윤리강령 또는 행동규범을 수립하고, 이를 임직원 교육을 통해 내재화해야 합니다. 더 나아가 윤리 위반 행위에 대한 익명 제보 시스템을 도입하여 투명하고 건전한 조직 문화를 조성해야 합니다. [사례] 유통업 중소기업 H사는 투명한 경영을 위해 윤리 강령을 제정하고 익명 제보 시스템을 도입하여 임직원의 부정행위를 사전에 방지하고 청렴한 조직 문화를 조성했습니다.</li>
                 <li className="leading-relaxed">정보보안 정책 수립 및 정기적 교육 실시: 기업의 정보자산을 보호하기 위한 정보보안 정책(개인정보 보호, 데이터 보안, 시스템 접근 통제 등)을 수립해야 합니다. 임직원을 대상으로 정보보안 교육을 정기적으로 실시하고, 보안 시스템을 강화하여 정보 유출 및 사이버 공격에 대한 대비 태세를 갖추어야 합니다. [사례] 소프트웨어 개발사 I사는 정보보호 관리체계를 수립하고 정기적인 정보보안 교육 및 모의 해킹 훈련을 통해 고객 정보 유출 리스크를 최소화하고 신뢰도를 높였습니다.</li>
-                <li className="leading-relaxed">ESG 정보 공개 및 소통 채널 구축: 기업 홈페이지 내에 '지속가능경영' 또는 'ESG 경영' 섹션을 신설하여 MIX의 ESG 비전, 주요 정책, 그리고 현재 진행 중인 환경, 사회, 지배구조 관련 활동 및 성과를 공개해야 합니다. 이는 이해관계자들과의 투명한 소통을 시작하는 중요한 단계입니다. [사례] 패션 스타트업 J사는 자사 홈페이지에 지속가능경영 페이지를 신설하여 친환경 소재 사용, 직원 복지 프로그램, 기부 활동 등 주요 ESG 활동 내역을 공개하며 고객과의 소통을 강화했습니다.</li>
+                <li className="leading-relaxed">ESG 정보 공개 및 소통 채널 구축: 기업 홈페이지 내에 '지속가능경영' 또는 'ESG 경영' 섹션을 신설하여 OOO의 ESG 비전, 주요 정책, 그리고 현재 진행 중인 환경, 사회, 지배구조 관련 활동 및 성과를 공개해야 합니다. 이는 이해관계자들과의 투명한 소통을 시작하는 중요한 단계입니다. [사례] 패션 스타트업 J사는 자사 홈페이지에 지속가능경영 페이지를 신설하여 친환경 소재 사용, 직원 복지 프로그램, 기부 활동 등 주요 ESG 활동 내역을 공개하며 고객과의 소통을 강화했습니다.</li>
               </ul>
             </div>
           </div>

@@ -110,7 +110,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
   return (
     <>
-      <div className="text-center py-12 sm:py-16">
+      <div className="text-center pb-12 sm:pb-16">
         <div className="flex justify-center mb-8 animate-fade-in-down">
           <EsgLogo className="w-48 h-48 sm:w-56 sm:h-56" />
         </div>
@@ -121,27 +121,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
           ( 귀사의 ESG경영 활동에 도움을 받아보세요)
         </p>
         
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="w-full sm:w-auto flex items-center justify-center gap-3 bg-slate-700 text-slate-300 font-bold py-4 px-8 text-xl rounded-full hover:bg-slate-600 transition-transform transform hover:scale-105 border border-slate-600"
-          >
-            <EyeIcon className="w-6 h-6" />
-            보고서 샘플 보기
-          </button>
+        <div className="flex flex-col items-center justify-center gap-6">
           <button
             onClick={handleStartClick}
-            className="w-full sm:w-auto flex items-center justify-center gap-3 bg-green-500 text-white font-bold py-4 px-8 text-xl rounded-full hover:bg-green-600 transition-transform transform hover:scale-105 shadow-lg shadow-green-500/20"
+            className="w-full sm:w-auto flex items-center justify-center bg-green-500 text-white font-bold py-6 px-14 text-4xl rounded-full hover:bg-green-600 transition-transform transform hover:scale-105 shadow-lg shadow-green-500/20"
           >
             ESG 자가진단 시작하기
-            <ChevronRightIcon className="w-6 h-6" />
+          </button>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full sm:w-auto flex items-center justify-center gap-2 bg-slate-700 text-slate-300 font-bold py-3 px-6 text-base rounded-full hover:bg-slate-600 transition-transform transform hover:scale-105 border border-slate-600"
+          >
+            <EyeIcon className="w-5 h-5" />
+            진단결과 보고서 샘플 보기
           </button>
         </div>
         <div className="mt-4 text-slate-400 text-lg">
           금일 사용횟수: {usageCount} / {DAILY_LIMIT}
         </div>
 
-        <div className="mt-16 sm:mt-24 text-center">
+        <div className="mt-8 sm:mt-12 text-center">
             <p className="text-xl font-bold text-slate-400">국가철도공단</p>
             <p className="mt-2 text-lg text-slate-500">(문의 : 경영성과처 ESG 담당자 : 042-607-3160)</p>
         </div>

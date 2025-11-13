@@ -66,7 +66,7 @@ const App: React.FC = () => {
   return (
     <div className="bg-slate-900 min-h-screen">
       <Header onNavigate={navigate} currentView={currentView} />
-      <main className="container mx-auto px-4 py-8 sm:py-12">
+      <main className={`container mx-auto px-4 ${currentView === 'landing' ? 'pt-4 pb-8 sm:pt-6 sm:pb-12' : 'py-8 sm:py-12'}`}>
         {renderContent()}
       </main>
     </div>

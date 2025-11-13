@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DiagnosisResult, ESGTopic, Indicator } from '../types';
 import { generateSuggestions } from '../services/geminiService';
 import { saveDiagnosis } from '../services/storageService';
@@ -89,48 +89,50 @@ const UserAnswers: React.FC<{ result: DiagnosisResult }> = ({ result }) => {
 }
 
 const ReportPage: React.FC<ReportPageProps> = ({ result, onBack, onGoHome, onSuggestionsGenerated }) => {
-  // REMOVED: Local state for report data. Now uses the `result` prop as the single source of truth.
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const reportContentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchSuggestions = async () => {
-      // Only fetch if suggestions don't already exist in the prop
-      if (!result.suggestions) {
-        setIsLoading(true);
-        setError(null);
-        
-        try {
-          saveDiagnosis(result); // Save initial result without suggestions
-          const suggestions = await generateSuggestions(result);
-          const updatedResult = { ...result, suggestions };
-          saveDiagnosis(updatedResult); // Save final result with suggestions
-          onSuggestionsGenerated(updatedResult); // <<-- Lift the final state up to the parent
-        } catch (err) {
-          console.error("Failed to generate suggestions:", err);
-          let errorMessage = "AI 제언 생성에 실패했습니다. 잠시 후 다시 시도해주세요.";
-          if (err instanceof Error) {
-            const errStr = err.toString().toLowerCase();
-            if (errStr.includes("api key")) {
-              errorMessage = "AI 제언 생성 실패: API 키 설정에 문제가 있습니다. 관리자에게 문의하세요.";
-            } else if (errStr.includes("fetch") || errStr.includes("network")) {
-              errorMessage = "AI 제언 생성 실패: 서버와 통신할 수 없습니다. 네트워크 연결을 확인해주세요.";
-            } else if (errStr.includes("overloaded") || errStr.includes("503")) {
-              errorMessage = "AI 모델이 현재 응답하지 않습니다. 서버 과부하 상태일 수 있으니, 잠시 후 다시 시도해주세요.";
-            }
+  const fetchSuggestions = useCallback(async () => {
+    if (!result.suggestions) {
+      setIsLoading(true);
+      setError(null);
+      
+      try {
+        saveDiagnosis(result);
+        const suggestions = await generateSuggestions(result);
+        const updatedResult = { ...result, suggestions };
+        saveDiagnosis(updatedResult);
+        onSuggestionsGenerated(updatedResult);
+      } catch (err) {
+        console.error("Failed to generate suggestions:", err);
+        let errorMessage = "AI 제언 생성에 실패했습니다. 잠시 후 다시 시도해주세요.";
+        if (err instanceof Error) {
+          const errStr = err.toString().toLowerCase();
+          if (errStr.includes("api key")) {
+            errorMessage = "AI 제언 생성 실패: API 키 설정에 문제가 있습니다. 관리자에게 문의하세요.";
+          } else if (errStr.includes("fetch") || errStr.includes("network")) {
+            errorMessage = "AI 제언 생성 실패: 서버와 통신할 수 없습니다. 네트워크 연결을 확인해주세요.";
+          } else if (errStr.includes("overloaded") || errStr.includes("503")) {
+            errorMessage = "AI 모델이 현재 응답하지 않습니다. 서버 과부하 상태일 수 있으니, 잠시 후 다시 시도해주세요.";
           }
-          setError(errorMessage);
-        } finally {
-          setIsLoading(false);
         }
+        setError(errorMessage);
+      } finally {
+        setIsLoading(false);
       }
-    };
-
-    fetchSuggestions();
+    }
   }, [result, onSuggestionsGenerated]);
 
-  const { scores, suggestions } = result; // Use prop directly
+  useEffect(() => {
+    fetchSuggestions();
+  }, [fetchSuggestions]);
+
+  const handleRetry = () => {
+    fetchSuggestions();
+  };
+
+  const { scores, suggestions } = result;
 
   const chartData = [
     { topic: '환경 (E)', score: scores.E, fullMark: 5 },
@@ -143,23 +145,19 @@ const ReportPage: React.FC<ReportPageProps> = ({ result, onBack, onGoHome, onSug
 
     const reportClone = reportContentRef.current.cloneNode(true) as HTMLElement;
     
-    // Make user answers visible in the clone
     const userAnswersDetails = reportClone.querySelector('.user-answers-details');
     userAnswersDetails?.classList.remove('hidden');
 
     const userAnswersToggleButton = reportClone.querySelector('.user-answers-toggle-button');
     if (userAnswersToggleButton) {
-      // Create a new static header div
       const staticHeader = document.createElement('div');
       staticHeader.className = 'p-6 w-full flex items-center gap-3 bg-slate-700/50 rounded-t-2xl';
       
-      // Copy the title content from the button but without the chevron icon
       const titleContent = userAnswersToggleButton.querySelector('div.flex.items-center.gap-3');
       if (titleContent) {
         staticHeader.innerHTML = titleContent.innerHTML;
       }
       
-      // Replace the interactive button with the new static header
       userAnswersToggleButton.parentNode?.replaceChild(staticHeader, userAnswersToggleButton);
     }
 
@@ -211,14 +209,28 @@ const ReportPage: React.FC<ReportPageProps> = ({ result, onBack, onGoHome, onSug
   );
 
   const renderError = () => (
-    <div className="text-center py-20 bg-red-900/20 border border-red-500/30 rounded-2xl shadow-lg">
-      <p className="text-xl font-semibold text-red-400">{error}</p>
-      <button 
-        onClick={onBack}
-        className="mt-6 bg-red-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-600 transition-colors"
-      >
-        진단으로 돌아가기
-      </button>
+    <div className="text-center py-16 bg-red-900/20 border border-red-500/30 rounded-2xl shadow-lg">
+      <div className="flex justify-center mb-4">
+        <NoSymbolIcon className="w-12 h-12 text-red-400" />
+      </div>
+      <p className="text-xl font-semibold text-red-300 mb-2">보고서 생성 실패</p>
+      <p className="text-slate-300 mb-6 max-w-md mx-auto">{error}</p>
+      <div className="flex justify-center gap-4">
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 bg-slate-700 text-slate-300 font-semibold py-2 px-4 rounded-lg border border-slate-600 hover:bg-slate-600 transition-colors"
+        >
+          <ArrowUturnLeftIcon className="w-5 h-5" />
+          진단으로 돌아가기
+        </button>
+        <button 
+          onClick={handleRetry}
+          className="flex items-center gap-2 bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors"
+        >
+          <ArrowPathIcon className="w-5 h-5" />
+          AI 보고서 생성 재시도
+        </button>
+      </div>
     </div>
   );
   
